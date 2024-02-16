@@ -53,6 +53,7 @@ class MetierController extends Controller
         $metier = new Metier;
         $metier->libelle = $metierRequest->libelle;
         $metier->description = $metierRequest->description;
+        $metier->slug = $metierRequest->slug;
         $metier->save();
         $succes = 'Enregistrement effectué avec succès';
         return redirect()->route('metiers.index')->withInformation($succes);

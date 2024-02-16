@@ -17,13 +17,31 @@ class CompetenceController extends Controller
      */
     public function index()
     {
-        // echo"cbon";
-        // $competences = Competence::all();  methode statique pas de where
-        // $competences = Competence::get(); possibiliter de where et autre
-        // $competences = Competence::orderBy('id', 'desc')->get();
-        $competences = Competence::orderByDesc('id')->get();
-        //Dump & die = dd
-        dd($competences);
+//        echo "J'arrive sur la liste des compétences";
+//        $competences = Competence::all();
+//        $competences = Competence::all('intitule'); //SELECT intitule FROM competences
+//        $competences = Competence::orderBy('id','desc')->get(); //SELECT intitule FROM competences
+//        $competences = Competence::where('intitule','LIKE','Java')->get();
+//        $competences = Competence::where('intitule','LIKE','%SQL%')->get();
+//        
+//                  
+        // $competences = Competence::orderByDesc('id')->limit(5)->get();
+//        $competences = Competence::orderByDesc('id')->offset(5)->get();
+//        $competences = Competence::orderByDesc('id')->limit(5)->get();
+
+//         $competences = Competence::where('intitule', 'LIKE', '%sql')->count();
+
+//         $competences = Competence::find(5);
+            $competences = Competence::get();
+
+        //     foreach($competences as $competence){
+        //         echo $competence->intitule . '<br>';
+        //     }
+
+        // //Dump & Die
+        // dd($competences);
+return view ('competences.index', compact('competences'));
+
     }
 
     /**
@@ -31,7 +49,7 @@ class CompetenceController extends Controller
      */
     public function create()
     {
-        //
+        echo 'création d\'une compétence';
     }
 
     /**

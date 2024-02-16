@@ -18,15 +18,15 @@
                         <fieldset>
                             <legend></legend>
                             <div class="form-group row">
-                                <label for="intitule" class="col-sm-2 col-form-label">Intitulé : </label>
+                                <label for="libelle" class="col-sm-2 col-form-label">Intitulé : </label>
                                 <div class="col-sm-10">
                                     <input type="text"
-                                           class="form-control @error('intitule') is-invalid @enderror"
-                                           id="intitule"
-                                           name="intitule" 
-                                           value="{{old('intitule', $metier->intitule)}}">
+                                           class="form-control @error('libelle') is-invalid @enderror"
+                                           id="libelle"
+                                           name="libelle" 
+                                           value="{{old('libelle', $metier->libelle)}}">
 
-                                           @error('intitule')
+                                           @error('libelle')
                                            <p class="text-danger" role="alert">{{$message}}</p>
                                            @enderror
                                 </div>
@@ -43,10 +43,23 @@
                                                 @enderror
                             </div>
 
+                            <div class="form-group">
+                                <label for="slug"  class="col-sm-2 col-form-label">Descriptif :</label>
+                                <textarea class="form-control @error('slug') is-invalid @enderror"
+                                          id="slug"
+                                          name="slug"
+                                          rows="3">{{old('slug', $metier->slug)}}</textarea>
+                                                @error('slug')
+                                                <p class="text-danger" role="alert">{{$message}}</p>
+                                                @enderror
+                            </div>
+
+                            
+
 
 
                          <div class="pos-bloc-section">
-                               <a href="{{route('metier.index')}}" class="btn btn-primary">Retour</a>
+                               <a href="{{route('metiers.index')}}" class="btn btn-primary">Retour</a>
                                <button type="submit" class ="btn btn-primary float-end">Modifier</button>
                          </div>
                          </fieldset>

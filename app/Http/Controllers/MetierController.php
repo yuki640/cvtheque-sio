@@ -46,9 +46,9 @@ class MetierController extends Controller
     public function store(MetierRequest $metierRequest)
     {
         
-         $valadateDtata = $metierRequest->validated();
+    //      $valadateDtata = $metierRequest->validated();
       
-      Metier::create($valadateDtata);
+    //   Metier::create($valadateDtata);
     
         $metier = new Metier;
         $metier->libelle = $metierRequest->libelle;

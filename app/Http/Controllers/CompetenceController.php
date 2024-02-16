@@ -68,10 +68,10 @@ class CompetenceController extends Controller
     public function store(CompetenceRequest $competenceRequest)
     {
         // recuperer les donnée valider dans un tableau 
-         $valadateDtata = $competenceRequest->validated();
+        //  $valadateDtata = $competenceRequest->validated();
        // $valadateDtata = $competenceRequest->all();
       //  dd($valadateDtata);
-        Competence::create($valadateDtata);
+        // Competence::create($valadateDtata);
         // return redirect()->route('competences.index')->with('information', 'Enregistrement effectué avec succès');
         $competence = new Competence;
         $competence->intitule = $competenceRequest->intitule;

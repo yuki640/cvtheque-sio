@@ -32,6 +32,13 @@
                                           rows="3">{{$metier->description}}</textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="slug " class="col-sm-2 col-form-label">Intitulé : </label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly="" class="form-control" id="slug "
+                                          name="slug " value="{{$metier->slug }}">
+                                </div>
+                            </div>
 
 
                          <div class="pos-bloc-section">

@@ -26,4 +26,12 @@ class CompetenceRequest extends FormRequest
             'description' => ['required', 'string', 'max:500'],
      ];
     }
+
+
+    public function messages(){
+        return [
+            'intitule.required' => 'La rubrique "Intitulé " est obligatoire.',
+            'description.required' => 'La rubrique "Descriptif " est obligatoire.',
+        ];
+    }
 }

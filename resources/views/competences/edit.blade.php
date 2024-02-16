@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h4 id="tables">Fiche compétence : Création</h4>
+                    <h4 id="tables">Fiche compétence : Modification</h4>
                 </div>
                 <div class="bs-component">
-                    <form method="post" action ="{{route('competences.store')}}">
-                        @method('POST')
+                    <form method="post" action ="{{route('competences.update', ['competence'=>$competence->id])}}">
+                        @method('PUT')
                         @csrf
                         <fieldset>
                             <legend></legend>
@@ -24,7 +24,7 @@
                                            class="form-control @error('intitule') is-invalid @enderror"
                                            id="intitule"
                                            name="intitule" 
-                                           value="{{old('intitule')}}">
+                                           value="{{old('intitule', $competence->intitule)}}">
 
                                            @error('intitule')
                                            <p class="text-danger" role="alert">{{$message}}</p>
@@ -37,7 +37,7 @@
                                 <textarea class="form-control @error('description') is-invalid @enderror"
                                           id="description"
                                           name="description"
-                                          rows="3">{{old('description')}}</textarea>
+                                          rows="3">{{old('description', $competence->description)}}</textarea>
                                                 @error('description')
                                                 <p class="text-danger" role="alert">{{$message}}</p>
                                                 @enderror
@@ -47,7 +47,7 @@
 
                          <div class="pos-bloc-section">
                                <a href="{{route('competences.index')}}" class="btn btn-primary">Retour</a>
-                               <button type="submit" class ="btn btn-primary float-end">Crée</button>
+                               <button type="submit" class ="btn btn-primary float-end">Modifier</button>
                          </div>
                          </fieldset>
                     </form>

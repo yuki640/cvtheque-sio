@@ -68,8 +68,18 @@ class CompetenceController extends Controller
     public function store(CompetenceRequest $competenceRequest)
     {
         // recuperer les donnée valider dans un tableau 
-        $valadateDtata = $competenceRequest->validated();
-        dd($valadateDtata);
+         $valadateDtata = $competenceRequest->validated();
+       // $valadateDtata = $competenceRequest->all();
+      //  dd($valadateDtata);
+        Competence::create($valadateDtata);
+        // return redirect()->route('competences.index')->with('information', 'Enregistrement effectué avec succès');
+        $competence = new Competence;
+        $competence->intitule = $competenceRequest->intitule;
+        $competence->description = $competenceRequest->description;
+        $competence->save();
+        $succes = 'Enregistrement effectué avec succès';
+        return redirect()->route('competences.index')->withInformation($succes);
+
     }
 
     /**
@@ -90,24 +100,47 @@ class CompetenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Competence $competence)
     {
-        echo 'je modifie';
+        // echo 'je modifie';
+
+        $data = [
+            'titel' => 'les competences de ' . config('app.name'),
+            'description' => 'Retrouver toute les competences de ' . config('app.name'),
+            'competence' => $competence,
+        ];
+
+        return view ('competences.edit', $data);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CompetenceRequest $competenceRequest, Competence $competence)
     {
-        //
+         
+        $valadateDtata = $competenceRequest->all();
+        $competence->update($valadateDtata);
+        $succes = 'modification effectué avec succès';
+        return redirect()->route('competences.index')->withInformation($succes);
+
+        // //autre alternative 
+       
+        // $competence->intitule = $competenceRequest->intitule;
+        // $competence->description = $competenceRequest->description;
+        // $competence->save();
+        // $succes = 'modification effectué avec succès';
+        // return redirect()->route('competences.index')->withInformation($succes);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Competence $competence)
     {
-        echo 'je suprime';
+        // echo 'je suprime';
+        $competence->delete();
+        return back()->withInformation('Suppression faite !');
     }
 }

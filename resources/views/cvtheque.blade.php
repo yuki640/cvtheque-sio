@@ -39,6 +39,7 @@
                             class="caret"></span></a>
                     <div class="dropdown-menu" aria-labelledby="themes">
                         <a class="dropdown-item" href="{{route('competences.index')}}">Compétences</a>
+                        <a class="dropdown-item" href="{{route('metiers.index')}}">Metiers</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="../cerulean/">Cerulean</a>
                         <a class="dropdown-item" href="../cosmo/">Cosmo</a>

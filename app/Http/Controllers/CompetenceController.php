@@ -32,7 +32,7 @@ class CompetenceController extends Controller
 //         $competences = Competence::where('intitule', 'LIKE', '%sql')->count();
 
 //         $competences = Competence::find(5);
-            $competences = Competence::get();
+           
 
         //     foreach($competences as $competence){
         //         echo $competence->intitule . '<br>';
@@ -40,7 +40,16 @@ class CompetenceController extends Controller
 
         // //Dump & Die
         // dd($competences);
-return view ('competences.index', compact('competences'));
+
+            $competences = Competence::get();
+            
+            $data = [
+                'titel' => 'les competences de ' . config('app.name'),
+                'description' => 'Retrouver toute les competences de ' . config('app.name'),
+                'competences' => $competences,
+            ];
+            
+            return view ('competences.index', $data);
 
     }
 
@@ -49,23 +58,33 @@ return view ('competences.index', compact('competences'));
      */
     public function create()
     {
-        echo 'création d\'une compétence';
+        // echo 'création d\'une compétence';
+        return view ('competences.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CompetenceRequest $competenceRequest)
     {
-        //
+        // recuperer les donnée valider dans un tableau 
+        $valadateDtata = $competenceRequest->validated();
+        dd($valadateDtata);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Competence $competence)
     {
-        //
+        // echo 'je consulte';
+        $data = [
+            'titel' => 'les competences de ' . config('app.name'),
+            'description' => 'Retrouver toute les competences de ' . config('app.name'),
+            'competence' => $competence,
+        ];
+
+        return view ('competences.show', $data);
     }
 
     /**
@@ -73,7 +92,7 @@ return view ('competences.index', compact('competences'));
      */
     public function edit(string $id)
     {
-        //
+        echo 'je modifie';
     }
 
     /**
@@ -89,6 +108,6 @@ return view ('competences.index', compact('competences'));
      */
     public function destroy(string $id)
     {
-        //
+        echo 'je suprime';
     }
 }

@@ -1,7 +1,7 @@
 <!-- Directive Blade spécifiant l'héritage  -->
 @extends('cvtheque')
 
- <!-- Directive Blade spécifiant l'injection du contenu de la section vers une liaison @yield  -->
+ <!-- Directive Blade spécifiant l'injection du contenu de la section vers une liaison yield  -->
 @section('contenu')
 
     <div class="bs-docs-section pos-bloc-section">
@@ -10,7 +10,7 @@
             {{--               --}}
             {{--            </div>--}}
             <div class="col-lg-12 ">
-                <a href="{{route('competences.create')}}" class="btn btn-primary float-right">Créer une compétence</a>
+                <a href="{{route('competences.create')}}" class="btn btn-primary float-end">Créer une compétence</a>
             </div>
         </div>
     </div>
@@ -48,9 +48,30 @@
                                 <tr>
                                     <th scope="row">{{$competence->id}}</th>
                                     <td><strong>{{$competence->intitule}}</strong></td>
-                                    <td>BT C</td>
-                                    <td>BT M</td>
-                                    <td>BT S</td>
+                                    <td>
+                                        <form method="post" action="{{route('competences.show', $competence->id)}}">
+                                                @csrf
+                                                @method('GET')
+                                            <button type="submit" class="btn btn-primary" > Consulter </button>
+
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="{{route('competences.edit', $competence->id)}}">
+                                                @csrf
+                                                @method('GET')
+                                            <button type="submit" class="btn btn-primary" > Modifier </button>
+
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="{{route('competences.destroy', $competence->id)}}">
+                                                @csrf
+                                                @method('DELETE')
+                                            <button type="submit" class="btn btn-primary" > Supprimer </button>
+
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                          <!-- FIN BOUCLE  -->

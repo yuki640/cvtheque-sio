@@ -3,7 +3,8 @@
 <head>
     <!--    Repose sur : https://bootswatch.com/slate/-->
     <meta charset="UTF-8">
-    <title>La CVThèque pour la formation</title>
+    <title>{{$titel ?? ''}}</title>
+    <meta name = 'description' content = "{{$description ?? ''}}">
 
     <!--    OU-->
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">

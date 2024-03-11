@@ -65,9 +65,9 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form method="post" action="{{route('metiers.destroy', $metier->id)}}">
+                                        <form method="post" action="{{route('metiers.sup', $metier->id)}}">
                                                 @csrf
-                                                @method('DELETE')
+                                                @method('GET')
                                             <button type="submit" class="btn btn-primary" > Supprimer </button>
 
                                         </form>

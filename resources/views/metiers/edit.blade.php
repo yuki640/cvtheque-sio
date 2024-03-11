@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="slug"  class="col-sm-2 col-form-label">Descriptif :</label>
+                                <label for="slug"  class="col-sm-2 col-form-label">Slug :</label>
                                 <textarea class="form-control @error('slug') is-invalid @enderror"
                                           id="slug"
                                           name="slug"

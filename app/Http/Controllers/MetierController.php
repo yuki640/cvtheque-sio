@@ -50,11 +50,14 @@ class MetierController extends Controller
       
     //   Metier::create($valadateDtata);
     
-        $metier = new Metier;
-        $metier->libelle = $metierRequest->libelle;
-        $metier->description = $metierRequest->description;
-        $metier->slug = $metierRequest->slug;
-        $metier->save();
+        // $metier = new Metier;
+        // $metier->libelle = $metierRequest->libelle;
+        // $metier->description = $metierRequest->description;
+        // $metier->slug = $metierRequest->slug;
+        // $metier->save();
+        
+
+        Metier::create($metierRequest->all());
         $succes = 'Enregistrement effectué avec succès';
         return redirect()->route('metiers.index')->withInformation($succes);
 
@@ -108,13 +111,24 @@ class MetierController extends Controller
        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+ 
+
     public function destroy(Metier $metier)
     {
         // echo 'je suprime';
         $metier->delete();
-        return back()->withInformation('Suppression faite !');
+        return redirect()->route('metiers.index')->withInformation('Suppression faite !');
+    }
+
+    public function sup(Metier $metier)
+    {
+        $data = [
+            'titel' => 'les metiers de ' . config('app.name'),
+            'description' => 'Retrouver toute les metiers de ' . config('app.name'),
+            'metier' => $metier,
+        ];
+
+        return view ('metiers.sup', $data);
     }
 }
+

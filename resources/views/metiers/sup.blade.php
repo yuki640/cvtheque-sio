@@ -12,7 +12,9 @@
                     <h4 id="tables">ICI LE TITRE : Fiche compétence : Consultation</h4>
                 </div>
                 <div class="bs-component">
-                    <form>
+                <form method="post" action ="{{route('metiers.destroy', ['metier'=>$metier->id])}}">
+                        @method('DELETE')
+                        @csrf
                         <fieldset>
                             <legend></legend>
                             <div class="form-group row">
@@ -33,7 +35,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="slug " class="col-sm-2 col-form-label">slug : </label>
+                                <label for="slug " class="col-sm-2 col-form-label">Intitulé : </label>
                                 <div class="col-sm-10">
                                     <input type="text" readonly="" class="form-control" id="slug "
                                           name="slug " value="{{$metier->slug }}">
@@ -42,7 +44,8 @@
 
 
                          <div class="pos-bloc-section">
-                               <a href="{{route('metiers.index')}}" class="btn btn-primary">Retour</a>
+                         <a href="{{route('competences.index')}}" class="btn btn-primary">Retour</a>
+                               <button type="submit" class ="btn btn-primary float-end">Supprimer</button>
                          </div>
                          </fieldset>
                     </form>

@@ -14,4 +14,10 @@ class Metier extends Model
         'description',
         'slug',
     ];
+
+    // la metode professionnels permet de définir la relation entre les tables metier et professionnel
+    public function professionnels()
+    {
+        return $this->hasMany(Professionnel::class);
+    }
 }

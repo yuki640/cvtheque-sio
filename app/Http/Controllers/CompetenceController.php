@@ -141,6 +141,18 @@ class CompetenceController extends Controller
     {
         // echo 'je suprime';
         $competence->delete();
-        return back()->withInformation('Suppression faite !');
+        return redirect()->route('competences.index')->withInformation('Suppression faite !');
     }
+
+    public function sup(Competence $competence)
+    {
+        $data = [
+            'titel' => 'les competences de ' . config('app.name'),
+            'description' => 'Retrouver toute les competences de ' . config('app.name'),
+            'competence' => $competence,
+        ];
+
+        return view ('competences.sup', $data);
+    }
+    
 }

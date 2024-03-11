@@ -47,7 +47,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../help/">Help</a>
+                    <a class="nav-link" href="{{route('professionnels.index')}}">Les CV</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://blog.bootswatch.com/">Blog</a>

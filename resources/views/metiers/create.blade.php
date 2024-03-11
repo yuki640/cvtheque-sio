@@ -62,7 +62,7 @@
 
                          <div class="pos-bloc-section">
                                <a href="{{route('metiers.index')}}" class="btn btn-primary">Retour</a>
-                               <button type="submit" class ="btn btn-primary float-end">Crée</button>
+                               <button type="submit" class ="btn btn-primary float-end">Créer</button>
                          </div>
                          </fieldset>
                     </form>

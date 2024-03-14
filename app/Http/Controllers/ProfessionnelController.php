@@ -50,17 +50,27 @@ class ProfessionnelController extends Controller
     
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
-        public function store(ProfessionnelRequest $professionnelRequest)
+    public function store(ProfessionnelRequest $professionnelRequest)
     {
-        Professionnel::create($professionnelRequest->all());
+        $data = $professionnelRequest->validated(); // Utilisez `validated()` si vous avez des règles de validation dans ProfessionnelRequest
+    
+        // Si 'metier_id' est à une valeur représentant "Tous les métiers" (e.g., '', '0')
+        if (empty($data['metier_id']) || $data['metier_id'] === '0') {
+            return back()->with('error', 'Veuillez sélectionner un métier spécifique.'); // Retour avec message d'erreur
+        }
+    
+        // Si le champ 'domaine' est présent dans la requête, convertissez-le en chaîne
+        if (isset($data['domaine'])) {
+            $data['domaine'] = implode(',', $data['domaine']);
+        }
+    
+        Professionnel::create($data);
+    
         $succes = 'Enregistrement effectué avec succès';
+    
         return redirect()->route('professionnels.index')->with('information', $succes);
-        
     }
-
+    
 
     /**
      * Display the specified resource.
@@ -108,13 +118,20 @@ class ProfessionnelController extends Controller
      * Update the specified resource in storage.
      */
     public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
-    {
-        $valadateDtata = $professionnelRequest->all();
-        $professionnel->update($valadateDtata);
-        $succes = 'modification effectué avec succès';
-        return redirect()->route('professionnels.index')->withInformation($succes);
+{
+    $data = $professionnelRequest->all();
 
+    // Si le champ 'domaine' est présent dans la requête, convertissez-le en chaîne
+    if (isset($data['domaine'])) {
+        $data['domaine'] = implode(',', $data['domaine']);
     }
+
+    $professionnel->update($data);
+
+    $succes = 'modification effectué avec succès';
+
+    return redirect()->route('professionnels.index')->withInformation($succes);
+}
 
     /**
      * Remove the specified resource from storage.

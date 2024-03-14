@@ -133,29 +133,39 @@
                             <label for="formation" class="col-sm-2 col-form-label">Formation :</label>
                             <div class="col-sm-10">
                                 <select class="form-control @error('formation') is-invalid @enderror" id="formation" name="formation">
-                                    <option value="1">Oui</option>
-                                    <option value="0">Non</option>
-                                </select>
+                                    <option value="1" {{old('formation', isset($professionnel) ? $professionnel->formation : '') == 1 ? 'selected' : ''}}>Oui</option>
+                                    <option value="0" {{old('formation', isset($professionnel) ? $professionnel->formation : '') == 0 ? 'selected' : ''}}>Non</option>
+                                    </select>
                                 @error('formation')
                                 <p class="text-danger" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
-                        {{-- Domaine --}}
+                 
+
+                        {{-- Domaine checkbox --}}
                         <div class="form-group row">
                             <label for="domaine" class="col-sm-2 col-form-label">Domaine :</label>
-                            <div class="col-sm-10">
-                                <select class="form-control @error('domaine') is-invalid @enderror" id="domaine" name="domaine">
-                                    <option value="S">S</option>
-                                    <option value="R">R</option>
-                                    <option value="D">D</option>
-                                </select>
+                            <div class="col-sm-10 d-flex align-items-center">
+                                <div class="form-check me-2">
+                                <input class="form-check-input @error('domaine') is-invalid @enderror" type="checkbox" id="domaine1" name="domaine[]" value="S" {{ in_array('S', old('domaine', isset($professionnel) ? explode(',', $professionnel->domaine) : [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="domaine1">Systèmes</label>
+                                </div>
+                                <div class="form-check me-2">
+                                <input class="form-check-input @error('domaine') is-invalid @enderror" type="checkbox" id="domaine2" name="domaine[]" value="R" {{ in_array('R', old('domaine', isset($professionnel) ? explode(',', $professionnel->domaine) : [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="domaine2">Réseaux</label>
+                                </div>
+                                <div class="form-check me-2">
+                                <input class="form-check-input @error('domaine') is-invalid @enderror" type="checkbox" id="domaine3" name="domaine[]" value="D" {{ in_array('D', old('domaine', isset($professionnel) ? explode(',', $professionnel->domaine) : [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="domaine3">Développement</label>
+                                </div>
                                 @error('domaine')
                                 <p class="text-danger" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
+
 
                         {{-- source --}}
                         <div class="form-group row">
@@ -191,14 +201,17 @@
                         <div class="form-group">
                             <label for="metier_id" class="col-form-label">Métier :</label>
                             <select class="form-control @error('metier_id') is-invalid @enderror" id="metier_id" name="metier_id">
+                                <option value="">Tous les métiers</option>
                                 @foreach ($metiers as $metier)
-                                    <option value="{{ $metier->id }}">{{ $metier->libelle }}</option>
+                                    <option value="{{ $metier->id }}" {{ old('metier_id') == $metier->id ? 'selected' : '' }}>{{ $metier->libelle }}</option>
                                 @endforeach
                             </select>
                             @error('metier_id')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
+
+
 
                         <div class="pos-bloc-section">
                             <a href="{{ route('professionnels.index') }}" class="btn btn-primary">Retour</a>
@@ -210,5 +223,4 @@
         </div>
     </div>
 </div>
-
 @endsection

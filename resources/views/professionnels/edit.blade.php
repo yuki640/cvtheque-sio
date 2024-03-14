@@ -120,12 +120,19 @@
                         </div>
                         <div class="form-group row">
                             <label for="domaine" class="col-sm-2 col-form-label">Domaine :</label>
-                            <div class="col-sm-10">
-                                <select class="form-control @error('domaine') is-invalid @enderror" id="domaine" name="domaine">
-                                    <option value="S" {{old('domaine', $professionnel->domaine) == 'S' ? 'selected' : ''}}>S</option>
-                                    <option value="R" {{old('domaine', $professionnel->domaine) == 'R' ? 'selected' : ''}}>R</option>
-                                    <option value="D" {{old('domaine', $professionnel->domaine) == 'D' ? 'selected' : ''}}>D</option>
-                                </select>
+                            <div class="col-sm-10 d-flex align-items-center">
+                                <div class="form-check me-2">
+                                    <input class="form-check-input @error('domaine') is-invalid @enderror" type="checkbox" id="domaine1" name="domaine[]" value="S" {{ in_array('S', old('domaine', explode(',', $professionnel->domaine))) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="domaine1">Systèmes</label>
+                                </div>
+                                <div class="form-check me-2">
+                                    <input class="form-check-input @error('domaine') is-invalid @enderror" type="checkbox" id="domaine2" name="domaine[]" value="R" {{ in_array('R', old('domaine', explode(',', $professionnel->domaine))) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="domaine2">Réseaux</label>
+                                </div>
+                                <div class="form-check me-2">
+                                    <input class="form-check-input @error('domaine') is-invalid @enderror" type="checkbox" id="domaine3" name="domaine[]" value="D" {{ in_array('D', old('domaine', explode(',', $professionnel->domaine))) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="domaine3">Développement</label>
+                                </div>
                                 @error('domaine')
                                 <p class="text-danger" role="alert">{{$message}}</p>
                                 @enderror
@@ -159,14 +166,16 @@
                         <div class="form-group">
                             <label for="metier_id" class="col-form-label">Métier :</label>
                             <select class="form-control @error('metier_id') is-invalid @enderror" id="metier_id" name="metier_id">
+                                <option value="">Tous les métiers</option> {{-- Si vous souhaitez garder cette option --}}
                                 @foreach ($metiers as $metier)
-                                    <option value="{{ $metier->id }}" {{ old('metier_id', $professionnel->metier->id) == $metier->id ? 'selected' : '' }}>{{ $metier->libelle }}</option>
+                                    <option value="{{ $metier->id }}" {{ old('metier_id', isset($professionnel->metier) ? $professionnel->metier->id : '') == $metier->id ? 'selected' : '' }}>{{ $metier->libelle }}</option>
                                 @endforeach
                             </select>
                             @error('metier_id')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
+
                         <div class="pos-bloc-section">
                             <a href="{{ route('professionnels.index') }}" class="btn btn-primary">Retour</a>
                             <button type="submit" class="btn btn-primary float-end">Modifier</button>

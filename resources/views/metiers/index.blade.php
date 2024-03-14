@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h4 id="tables">Liste des Metiers</h4>
+                    <h4 id="tables">Liste des Metiers ou pas</h4>
                 </div>
 
                 <div class="bs-component">

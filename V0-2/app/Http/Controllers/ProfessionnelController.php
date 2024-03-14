@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\{
     Professionnel,
     Metier,
+    Competence,
 };
 
 use App\Http\Requests\ProfessionnelRequest;
@@ -41,6 +42,8 @@ class ProfessionnelController extends Controller
      */
     public function create()
     {
+
+        $competences = Competence::all();
         // Récupération de tous les métiers pour les passer à la vue
         $metiers = Metier::all();
     

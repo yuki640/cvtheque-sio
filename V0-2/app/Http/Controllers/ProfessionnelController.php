@@ -41,38 +41,49 @@ class ProfessionnelController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+{
+    $competences = Competence::all(); // Récupère toutes les compétences
+    $metiers = Metier::all(); // Récupère tous les métiers
 
-        $competences = Competence::all();
-        // Récupération de tous les métiers pour les passer à la vue
-        $metiers = Metier::all();
+    // dd($competences);
+    return view('professionnels.create', compact('competences', 'metiers'));
+}
+
     
-        // Passage des métiers à la vue
-        return view('professionnels.create', compact('metiers'));
+
+
+public function store(ProfessionnelRequest $professionnelRequest)
+{
+    $data = $professionnelRequest->validated();
+
+    // Assurez-vous que 'metier_id' est bien sélectionné.
+    if (empty($data['metier_id']) || $data['metier_id'] === '0') {
+        return back()->with('error', 'Veuillez sélectionner un métier spécifique.');
     }
-    
 
-
-    public function store(ProfessionnelRequest $professionnelRequest)
-    {
-        $data = $professionnelRequest->validated(); // Utilisez `validated()` si vous avez des règles de validation dans ProfessionnelRequest
-    
-        // Si 'metier_id' est à une valeur représentant "Tous les métiers" (e.g., '', '0')
-        if (empty($data['metier_id']) || $data['metier_id'] === '0') {
-            return back()->with('error', 'Veuillez sélectionner un métier spécifique.'); // Retour avec message d'erreur
-        }
-    
-        // Si le champ 'domaine' est présent dans la requête, convertissez-le en chaîne
-        if (isset($data['domaine'])) {
-            $data['domaine'] = implode(',', $data['domaine']);
-        }
-    
-        Professionnel::create($data);
-    
-        $succes = 'Enregistrement effectué avec succès';
-    
-        return redirect()->route('professionnels.index')->with('information', $succes);
+    // Convertissez le domaine en chaîne, si présent.
+    if (isset($data['domaine'])) {
+        $data['domaine'] = implode(',', $data['domaine']);
     }
+
+    // Retirez les compétences du tableau $data pour éviter des erreurs lors de la création.
+    $competences = $data['competences_id'];
+    unset($data['competences_id']);
+
+    // Créez le professionnel sans les compétences.
+    $professionnel = Professionnel::create($data);
+
+    // Attachez les compétences au professionnel créé.
+    // Assurez-vous que les IDs des compétences sont valides et existent dans la requête.
+    if (!empty($competences)) {
+        $professionnel->competences()->attach($competences);
+    }
+
+    $succes = 'Enregistrement effectué avec succès';
+
+    return redirect()->route('professionnels.index')->with('information', $succes);
+}
+
     
 
     /**
@@ -109,9 +120,11 @@ class ProfessionnelController extends Controller
     public function edit(Professionnel $professionnel)
 {
     $metiers = Metier::all();
+    $competences = Competence::all();
     $data = [
         'professionnel' => $professionnel,
         'metiers' => $metiers,
+        'competences' => $competences,
     ];
     return view('professionnels.edit', $data); // Utilisez $data directement sans compact
 }
@@ -120,21 +133,41 @@ class ProfessionnelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
-{
-    $data = $professionnelRequest->all();
+   /**
+ * Update the specified resource in storage.
+ */
+        public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
+        {
+            $data = $professionnelRequest->validated();
 
-    // Si le champ 'domaine' est présent dans la requête, convertissez-le en chaîne
-    if (isset($data['domaine'])) {
-        $data['domaine'] = implode(',', $data['domaine']);
-    }
+            // Convertissez le domaine en chaîne, si présent.
+            if (isset($data['domaine'])) {
+                $data['domaine'] = implode(',', $data['domaine']);
+            }
 
-    $professionnel->update($data);
+            // Séparez les compétences du reste des données pour éviter des erreurs lors de la mise à jour.
+            $competences = [];
+            if (isset($data['competences_id'])) {
+                $competences = $data['competences_id'];
+                unset($data['competences_id']); // Enlevez 'competences_id' pour ne pas essayer de le mettre à jour directement sur le modèle.
+            }
 
-    $succes = 'modification effectué avec succès';
+            // Mettez à jour le professionnel avec les données restantes.
+            $professionnel->update($data);
 
-    return redirect()->route('professionnels.index')->withInformation($succes);
-}
+            // Mettez à jour les associations de compétences.
+            if (!empty($competences)) {
+                $professionnel->competences()->sync($competences);
+            } else {
+                // Si aucune compétence n'est sélectionnée, détachez toutes les compétences.
+                $professionnel->competences()->detach();
+            }
+
+            $succes = 'Modification effectuée avec succès.';
+
+            return redirect()->route('professionnels.index')->withInformation($succes);
+        }
+
 
     /**
      * Remove the specified resource from storage.

@@ -113,6 +113,14 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label for="competences_id" class="col-form-label">Compétences :</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly="" class="form-control" id="competences_id"
+                                        name="competences_id" value="{{$professionnel->competences->implode('intitule', ', ')}}">
+                                </div>
+                        </div>
+
                          <div class="pos-bloc-section">
                                <a href="{{route('professionnels.index')}}" class="btn btn-primary">Retour</a>
                                <button type="submit" class ="btn btn-primary float-end">Supprimer</button>

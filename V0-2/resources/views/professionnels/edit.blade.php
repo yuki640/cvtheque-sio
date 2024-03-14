@@ -175,6 +175,21 @@
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label for="competences_id" class="col-form-label">Compétences :</label>
+                            <select class="form-control @error('competences_id') is-invalid @enderror" id="competences_id" name="competences_id[]" multiple>
+                                @foreach ($competences as $competence)
+                                    <option value="{{ $competence->id }}" 
+                                    {{ in_array($competence->id, old('competences_id', isset($professionnel) ? $professionnel->competences->pluck('id')->toArray() : [])) ? 'selected' : '' }}>
+                                        {{ $competence->intitule }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('competences_id')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+
 
                         <div class="pos-bloc-section">
                             <a href="{{ route('professionnels.index') }}" class="btn btn-primary">Retour</a>

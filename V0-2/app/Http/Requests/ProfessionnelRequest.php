@@ -32,6 +32,8 @@ class ProfessionnelRequest extends FormRequest
             'formation' => ['required', 'boolean'],
             'domaine' => ['required'],
             'metier_id' => ['required'],
+
+            'competences_id' => ['required'],
         ];
     }
 }

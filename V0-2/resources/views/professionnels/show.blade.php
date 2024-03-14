@@ -83,6 +83,12 @@
                             <label for="metier_id" class="col-form-label">Métier :</label>
                             <input type="text" readonly="" class="form-control" id="metier_id" name="metier_id" value="{{$professionnel->metier->libelle}}">
                         </div>
+                        <!-- competence -->
+                        <div class="form-group">
+                            <label for="competences_id" class="col-form-label">Compétences :</label>
+                            <input type="text" readonly="" class="form-control" id="competences_id" name="competences_id" value="{{$professionnel->competences->implode('intitule', ', ')}}">
+                        </div>
+
                         <div class="pos-bloc-section">
                             <a href="{{route('professionnels.index')}}" class="btn btn-primary">Retour</a>
                         </div>

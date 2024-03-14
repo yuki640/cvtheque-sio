@@ -77,6 +77,23 @@
                          <!-- FIN BOUCLE  -->
                         </tbody>
                     </table>
+                    <footer>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item {{ ($competences->currentPage() == 1) ? ' disabled' : '' }}">
+                                    <a class="page-link" href="{{ $competences->previousPageUrl() }}">Précédent</a>
+                                </li>
+                                @for ($i = 1; $i <= $competences->lastPage(); $i++)
+                                    <li class="page-item {{ ($competences->currentPage() == $i) ? ' active' : '' }}">
+                                        <a class="page-link" href="{{ $competences->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+                                <li class="page-item {{ ($competences->currentPage() == $competences->lastPage()) ? ' disabled' : '' }}">
+                                    <a class="page-link" href="{{ $competences->nextPageUrl() }}">Suivant</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </footer>
                 </div>
             </div>
         </div>

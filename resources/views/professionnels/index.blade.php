@@ -102,6 +102,23 @@
                         @endforelse
                     </tbody>
                 </table>
+                <footer>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item {{ ($professionnels->currentPage() == 1) ? ' disabled' : '' }}">
+                                    <a class="page-link" href="{{ $professionnels->previousPageUrl() }}">Précédent</a>
+                                </li>
+                                @for ($i = 1; $i <= $professionnels->lastPage(); $i++)
+                                    <li class="page-item {{ ($professionnels->currentPage() == $i) ? ' active' : '' }}">
+                                        <a class="page-link" href="{{ $professionnels->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+                                <li class="page-item {{ ($professionnels->currentPage() == $professionnels->lastPage()) ? ' disabled' : '' }}">
+                                    <a class="page-link" href="{{ $professionnels->nextPageUrl() }}">Suivant</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </footer>
             </div>
         </div>
     </div>

@@ -18,23 +18,23 @@ class ProfessionnelController extends Controller
      * Display a listing of the resource.
      */
     public function index($slug = null)
-{
-    $professionnels = $slug ?
-        Metier::where('slug', $slug)->firstOrFail()->professionnels()->get() :
-        Professionnel::all();
-
-    $metiers = Metier::all();
-
-    $data = [
-        'title' => 'Les professionnels de la ' . config('app.name'),
-        'description' => 'Liste des professionnels de la ' . config('app.name'),
-        'professionnels' => $professionnels,
-        'metiers' => $metiers,
-        'slug' => $slug,
-    ];
-
-    return view('professionnels.index', $data);
-}
+    {
+        $professionnels = $slug ?
+            Metier::where('slug', $slug)->firstOrFail()->professionnels()->paginate(6) :
+            Professionnel::paginate(6);
+    
+        $metiers = Metier::all();
+    
+        $data = [
+            'title' => 'Les professionnels de la ' . config('app.name'),
+            'description' => 'Liste des professionnels de la ' . config('app.name'),
+            'professionnels' => $professionnels,
+            'metiers' => $metiers,
+            'slug' => $slug,
+        ];
+    
+        return view('professionnels.index', $data);
+    }
 
 
     /**

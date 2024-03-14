@@ -19,7 +19,7 @@ class MetierController extends Controller
     {
 //       
 
-            $metiers = Metier::get();
+            $metiers = Metier::paginate(6);
             
             $data = [
                 'titel' => 'les Metiers de ' . config('app.name'),

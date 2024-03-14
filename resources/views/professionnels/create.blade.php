@@ -211,6 +211,24 @@
                             @enderror
                         </div>
 
+                        {{-- Competence select multiple --}}
+                        <div class="form-group row">
+                            <label for="competences_id" class="col-sm-2 col-form-label">Compétences :</label>
+                            <div class="col-sm-10">
+                                <select class="form-control @error('competences_id') is-invalid @enderror" id="competences_id" name="competences_id[]" multiple>
+                                    @foreach ($competences as $competence)
+                                        <option value="{{ $competence->id }}"
+                                         {{ in_array($competence->id, old('competences_id', [])) ? 'selected' : '' }}>
+                                         {{ $competence->intitule }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('competences')
+                                <p class="text-danger" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
 
 
                         <div class="pos-bloc-section">

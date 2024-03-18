@@ -42,5 +42,7 @@ Route::get('/metier/{slug}/professionnels', [ProfessionnelController::class, 'in
 
 // Route::get('/competence/{slug}/professionnels', [ProfessionnelController::class, 'index'])->name('professionnels.competence');
 
+Route::get('/professionnels/competence/{slug?}', [ProfessionnelController::class, 'index'])->name('professionnels.competence');
+
 Route::resource('professionnels', ProfessionnelController::class);
 

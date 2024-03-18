@@ -4,16 +4,22 @@
  <!-- Directive Blade spécifiant l'injection du contenu de la section vers une liaison yield  -->
 @section('contenu')
 
-    <div class="bs-docs-section pos-bloc-section">
-        <div class="row">
-            {{--            <div class="col-lg-9">--}}
-            {{--               --}}
-            {{--            </div>--}}
-            <div class="col-lg-12 ">
-                <a href="{{route('competences.create')}}" class="btn btn-primary float-end">Créer une compétence</a>
-            </div>
+    
+<div class="bs-docs-section pos-bloc-section">
+    <div class="row">
+        <div class="col-lg-12 ">
+            <!-- Barre de recherche -->
+            <form action="{{ route('competences.index') }}" method="GET" class="d-inline">
+                @csrf
+                <input type="text" name="search"/>
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </form>
+            <a href="{{route('competences.create')}}" class="btn btn-primary float-end">Créer une compétence</a>
         </div>
     </div>
+</div>
+
+   
 
      <!-- ICI LA GESTION DES MESSAGES D'INFORMATION   -->
     @if(session('information'))

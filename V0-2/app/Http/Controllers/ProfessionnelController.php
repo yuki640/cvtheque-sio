@@ -17,24 +17,38 @@ class ProfessionnelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($slug = null)
-    {
-        $professionnels = $slug ?
-            Metier::where('slug', $slug)->firstOrFail()->professionnels()->paginate(6) :
-            Professionnel::paginate(6);
-    
-        $metiers = Metier::all();
-    
-        $data = [
-            'title' => 'Les professionnels de la ' . config('app.name'),
-            'description' => 'Liste des professionnels de la ' . config('app.name'),
-            'professionnels' => $professionnels,
-            'metiers' => $metiers,
-            'slug' => $slug,
-        ];
-    
-        return view('professionnels.index', $data);
-    }
+           public function index(Request $request, $slug = null, $competenceSlug = null)
+{
+    $search = $request->get('search');
+    $competences = Competence::all();
+
+    $professionnels = Professionnel::when($slug, function ($query, $slug) {
+        return $query->whereHas('metier', function ($query) use ($slug) {
+            $query->where('slug', $slug);
+        });
+    })->when($competenceSlug, function ($query, $competenceSlug) {
+        return $query->whereHas('competences', function ($query) use ($competenceSlug) {
+            $query->where('slug', $competenceSlug);
+        });
+    })->where(function($query) use ($search) {
+        $query->where('nom', 'like', '%' . $search . '%')
+            ->orWhere('prenom', 'like', '%' . $search . '%');
+    })->paginate(6);
+
+    $metiers = Metier::all();
+
+    $data = [
+        'title' => 'Les professionnels de la ' . config('app.name'),
+        'description' => 'Liste des professionnels de la ' . config('app.name'),
+        'professionnels' => $professionnels,
+        'metiers' => $metiers,
+        'slug' => $slug,
+        'competences' => $competences,
+        'competenceSlug' => $competenceSlug,
+    ];
+
+    return view('professionnels.index', $data);
+}
 
 
     /**

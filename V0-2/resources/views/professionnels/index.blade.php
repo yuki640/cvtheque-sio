@@ -4,24 +4,37 @@
 
 <!-- Directive Blade spécifiant l'injection du contenu de la section vers une liaison yield -->
 @section('contenu')
-<div class="bs-docs-section pos-bloc-section">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="page-header">
-                <h4 id="tables">Liste des Professionnels</h4>
-                <select onchange="location.href=this.value">
-                    <!-- Option par défaut -->
-                    <option value="{{route('professionnels.index')}}" @unless($slug) selected="selected" @endunless>
-                        Tous les métiers
-                    </option>
-                    @foreach($metiers as $metier)
-                    <!-- Utilisation de <option> pour chaque métier -->
-                    <option value="{{route('professionnels.metier', ['slug'=>$metier->slug])}}" {{$slug == $metier->slug ? 'selected' : ''}}>
-                        {{$metier->libelle}}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+        <div class="bs-docs-section pos-bloc-section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="page-header">
+            <h4 id="tables">Liste des Professionnels</h4>
+            <select onchange="location.href=this.value">
+                <!-- Option par défaut -->
+                <option value="{{route('professionnels.index')}}" @unless($slug) selected="selected" @endunless>
+                    Tous les métiers
+                </option>
+                @foreach($metiers as $metier)
+                <!-- Utilisation de <option> pour chaque métier -->
+                <option value="{{route('professionnels.metier', ['slug'=>$metier->slug])}}" {{$slug == $metier->slug ? 'selected' : ''}}>
+                    {{$metier->libelle}}
+                </option>
+                @endforeach
+            </select>
+            <!-- Nouveau filtre pour les compétences -->
+            <select onchange="location.href=this.value">
+                <!-- Option par défaut -->
+                <option value="{{route('professionnels.index')}}" @unless($competenceSlug) selected="selected" @endunless>
+                    Toutes les compétences
+                </option>
+                @foreach($competences as $competence)
+                <!-- Utilisation de <option> pour chaque compétence -->
+                <option value="{{route('professionnels.competence', ['slug'=>$competence->slug])}}" {{$competenceSlug == $competence->slug ? 'selected' : ''}}>
+                    {{$competence->libelle}}
+                </option>
+                @endforeach
+            </select>
+        </div>
             <a href="{{ route('professionnels.create') }}" class="btn btn-primary float-end">Créer un professionnel</a>
         </div>
     </div>

@@ -30,7 +30,7 @@
                 @foreach($competences as $competence)
                 <!-- Utilisation de <option> pour chaque compétence -->
                 <option value="{{route('professionnels.competence', ['slug'=>$competence->slug])}}" {{$competenceSlug == $competence->slug ? 'selected' : ''}}>
-                    {{$competence->libelle}}
+                    {{$competence->competence_id}}
                 </option>
                 @endforeach
             </select>

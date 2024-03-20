@@ -17,38 +17,43 @@ class ProfessionnelController extends Controller
     /**
      * Display a listing of the resource.
      */
-           public function index(Request $request, $slug = null, $competenceSlug = null)
+    public function index(Request $request)
 {
     $search = $request->get('search');
+    $competenceId = $request->get('competence_id');
+    $slug = $request->get('slug');
     $competences = Competence::all();
+    $metiers = Metier::all();
 
     $professionnels = Professionnel::when($slug, function ($query, $slug) {
         return $query->whereHas('metier', function ($query) use ($slug) {
-            $query->where('slug', $slug);
+            $query->where('metiers.slug', $slug);
         });
-    })->when($competenceSlug, function ($query, $competenceSlug) {
-        return $query->whereHas('competences', function ($query) use ($competenceSlug) {
-            $query->where('slug', $competenceSlug);
+    })->when($competenceId, function ($query, $competenceId) {
+        return $query->whereHas('competences', function ($query) use ($competenceId) {
+            $query->where('competences.id', $competenceId);
         });
     })->where(function($query) use ($search) {
         $query->where('nom', 'like', '%' . $search . '%')
-            ->orWhere('prenom', 'like', '%' . $search . '%');
+              ->orWhere('prenom', 'like', '%' . $search . '%');
     })->paginate(6);
-
-    $metiers = Metier::all();
 
     $data = [
         'title' => 'Les professionnels de la ' . config('app.name'),
         'description' => 'Liste des professionnels de la ' . config('app.name'),
         'professionnels' => $professionnels,
         'metiers' => $metiers,
-        'slug' => $slug,
         'competences' => $competences,
-        'competenceSlug' => $competenceSlug,
+        'selectedCompetenceId' => $competenceId,
+        'slug' => $slug,
     ];
 
     return view('professionnels.index', $data);
 }
+
+    
+
+    
 
 
     /**

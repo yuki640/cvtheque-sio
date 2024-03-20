@@ -11,6 +11,9 @@ use App\Http\Controllers\{
 
 
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,16 +36,17 @@ Route::get('/competences/{competence}/sup', [CompetenceController::class, 'sup']
 Route::resource('competences', CompetenceController::class);
 
 Route::get('/metiers/{metier}/sup', [MetierController::class, 'sup'])->name('metiers.sup');
-
+                                                                                                                                                                                                 
 Route::resource('metiers', MetierController::class);
 
 Route::get('/professionnels/{professionnel}/sup', [ProfessionnelController::class, 'sup'])->name('professionnels.sup');
 
 Route::get('/metier/{slug}/professionnels', [ProfessionnelController::class, 'index'])->name('professionnels.metier');
 
-// Route::get('/competence/{slug}/professionnels', [ProfessionnelController::class, 'index'])->name('professionnels.competence');
+Route::get('/professionnels/{professionnel}/competences', [ProfessionnelController::class, 'competences'])->name('professionnels.competences'); 
 
-Route::get('/professionnels/competence/{slug?}', [ProfessionnelController::class, 'index'])->name('professionnels.competence');
+Route::get('/professionnels/{competenceSlug}/competences', [ProfessionnelController::class, 'index'])->name('professionnels.competences');
+
 
 Route::resource('professionnels', ProfessionnelController::class);
 

@@ -12,7 +12,7 @@
                     <h4 id="tables">Fiche professionnel : Consultation</h4>
                 </div>
                 <div class="bs-component">
-                    <form method="post" action ="{{route('professionnels.destroy', ['professionnel'=>$professionnel->id])}}">
+                    <form method="post" action ="{{route('professionnels.destroy', ['professionnel'=>$professionnel->id])}}" enctype = "multipart/formdata">
                         @method('DELETE')
                         @csrf
                         <fieldset>
@@ -102,6 +102,15 @@
                                 <div class="col-sm-10">
                                     <textarea readonly="" class="form-control" id="observation"
                                               name="observation" rows="3">{{$professionnel->observation}}</textarea>
+                                </div>
+                            </div>
+
+                            
+                            <!-- cv a download -->
+                            <div class="form-group row">
+                                <label for="cv" class="col-sm-2 col-form-label">CV :</label>
+                                <div class="col-sm-10">
+                                    <a href="{{ asset('storage/'.$professionnel->cv_path) }}" download>Télécharger le CV</a>
                                 </div>
                             </div>
 

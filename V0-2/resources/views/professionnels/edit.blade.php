@@ -10,7 +10,7 @@
                 <h4 id="tables">Fiche Professionnel : Modification</h4>
             </div>
             <div class="bs-component">
-                <form method="post" action ="{{route('professionnels.update', ['professionnel'=>$professionnel->id])}}">
+                <form method="post" action ="{{route('professionnels.update', ['professionnel'=>$professionnel->id])}}" enctype = "multipart/form-data">
                     @method('PUT')
                     @csrf
                     <fieldset>
@@ -160,6 +160,22 @@
                                           rows="3">{{old('observation', $professionnel->observation)}}</textarea>
                                 @error('observation')
                                 <p class="text-danger" role="alert">{{$message}}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <br>
+                       
+                        <div class="form-group row">
+                            <label for="cv" class="col-sm-2 col-form-label">CV :</label>
+                            <div class="col-sm-10">
+                                <input type="file"
+                                       class="form-control @error('cv') is-invalid @enderror"
+                                       id="cv"
+                                       name="cv" 
+                                       placeholder="Entrez votre cv">
+                                @error('cv')
+                                <p class="text-danger" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>

@@ -9,7 +9,7 @@
                 <h4 id="tables">Fiche Professionnel : Création</h4>
             </div>
             <div class="bs-component">
-                <form method="post" action ="{{ route('professionnels.store') }}">
+                <form method="post" action ="{{ route('professionnels.store') }}" enctype = "multipart/form-data" >
                     @csrf
                     <fieldset>
                         <legend></legend>
@@ -197,6 +197,24 @@
                             </div>
                         </div>
 
+                        <br>
+
+                        {{-- cv a upload --}}
+                        <div class="form-group row">
+                            <label for="cv" class="col-sm-2 col-form-label">CV :</label>
+                            <div class="col-sm-10">
+                                <input type="file"
+                                       class="form-control @error('cv') is-invalid @enderror"
+                                       id="cv"
+                                       name="cv" 
+                                       value="{{ old('cv') }}"
+                                       placeholder="Entrez votre cv">
+                                @error('cv')
+                                <p class="text-danger" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
                         {{-- Métier --}}
                         <div class="form-group">
                             <label for="metier_id" class="col-form-label">Métier :</label>
@@ -210,6 +228,8 @@
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <br>
 
                         {{-- Competence select multiple --}}
                         <div class="form-group row">

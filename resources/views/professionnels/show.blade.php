@@ -79,6 +79,17 @@
                                 <textarea readonly="" class="form-control" id="observation" name="observation" rows="3">{{$professionnel->observation}}</textarea>
                             </div>
                         </div>
+
+                        <!-- cv a download -->
+<div class="form-group row">
+    <label for="cv" class="col-sm-2 col-form-label">CV :</label>
+    <div class="col-sm-10">
+        <a href="{{ asset('storage/'.$professionnel->cv_path) }}" download>Télécharger le CV</a>
+    </div>
+</div>
+                        
+
+                        <!-- metier -->
                         <div class="form-group">
                             <label for="metier_id" class="col-form-label">Métier :</label>
                             <input type="text" readonly="" class="form-control" id="metier_id" name="metier_id" value="{{$professionnel->metier->libelle}}">

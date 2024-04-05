@@ -12,29 +12,50 @@ use App\Models\{
 
 use App\Http\Requests\ProfessionnelRequest;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProfessionnelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($slug = null)
-    {
-        $professionnels = $slug ?
-            Metier::where('slug', $slug)->firstOrFail()->professionnels()->paginate(6) :
-            Professionnel::paginate(6);
+    public function index(Request $request)
+{
+    $search = $request->get('search');
+    $competenceId = $request->get('competence_id');
+    $slug = $request->get('slug');
+    $competences = Competence::all();
+    $metiers = Metier::all();
+
+    $professionnels = Professionnel::when($slug, function ($query, $slug) {
+        return $query->whereHas('metier', function ($query) use ($slug) {
+            $query->where('metiers.slug', $slug);
+        });
+    })->when($competenceId, function ($query, $competenceId) {
+        return $query->whereHas('competences', function ($query) use ($competenceId) {
+            $query->where('competences.id', $competenceId);
+        });
+    })->where(function($query) use ($search) {
+        $query->where('nom', 'like', '%' . $search . '%')
+              ->orWhere('prenom', 'like', '%' . $search . '%');
+    })->paginate(6);
+
+    $data = [
+        'title' => 'Les professionnels de la ' . config('app.name'),
+        'description' => 'Liste des professionnels de la ' . config('app.name'),
+        'professionnels' => $professionnels,
+        'metiers' => $metiers,
+        'competences' => $competences,
+        'selectedCompetenceId' => $competenceId,
+        'slug' => $slug,
+    ];
+
+    return view('professionnels.index', $data);
+}
+
     
-        $metiers = Metier::all();
+
     
-        $data = [
-            'title' => 'Les professionnels de la ' . config('app.name'),
-            'description' => 'Liste des professionnels de la ' . config('app.name'),
-            'professionnels' => $professionnels,
-            'metiers' => $metiers,
-            'slug' => $slug,
-        ];
-    
-        return view('professionnels.index', $data);
-    }
 
 
     /**
@@ -69,6 +90,18 @@ public function store(ProfessionnelRequest $professionnelRequest)
     // Retirez les compétences du tableau $data pour éviter des erreurs lors de la création.
     $competences = $data['competences_id'];
     unset($data['competences_id']);
+
+    // changer de fichiers pour le CV
+
+    if($professionnelRequest->hasFile('cv')) {
+
+        $cv = $professionnelRequest->file('cv');
+      
+        $path = $cv->store('cvs', 'public'); // Stocke le fichier dans le répertoire 'cvs' du disque 'public'
+
+        // Ajoutez le chemin du fichier à votre tableau de données.
+        $data['cv_path'] = $path;
+    }
 
     // Créez le professionnel sans les compétences.
     $professionnel = Professionnel::create($data);
@@ -136,37 +169,52 @@ public function store(ProfessionnelRequest $professionnelRequest)
    /**
  * Update the specified resource in storage.
  */
-        public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
-        {
-            $data = $professionnelRequest->validated();
+public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
+{
+   
+    $data = $professionnelRequest->validated();
 
-            // Convertissez le domaine en chaîne, si présent.
-            if (isset($data['domaine'])) {
-                $data['domaine'] = implode(',', $data['domaine']);
-            }
+    // Convertissez le domaine en chaîne, si présent.
+    if (isset($data['domaine'])) {
+        $data['domaine'] = implode(',', $data['domaine']);
+    }
 
-            // Séparez les compétences du reste des données pour éviter des erreurs lors de la mise à jour.
-            $competences = [];
-            if (isset($data['competences_id'])) {
-                $competences = $data['competences_id'];
-                unset($data['competences_id']); // Enlevez 'competences_id' pour ne pas essayer de le mettre à jour directement sur le modèle.
-            }
+    // Séparez les compétences du reste des données pour éviter des erreurs lors de la mise à jour.
+    $competences = [];
+    if (isset($data['competences_id'])) {
+        $competences = $data['competences_id'];
+        unset($data['competences_id']); // Enlevez 'competences_id' pour ne pas essayer de le mettre à jour directement sur le modèle.
+    }
 
-            // Mettez à jour le professionnel avec les données restantes.
-            $professionnel->update($data);
+  
+    // changer de fichiers pour le CV
+    if($professionnelRequest->hasFile('cv')) {
 
-            // Mettez à jour les associations de compétences.
-            if (!empty($competences)) {
-                $professionnel->competences()->sync($competences);
-            } else {
-                // Si aucune compétence n'est sélectionnée, détachez toutes les compétences.
-                $professionnel->competences()->detach();
-            }
+        $cv = $professionnelRequest->file('cv');
+      
+        $path = $cv->store('cvs', 'public'); // Stocke le fichier dans le répertoire 'cvs' du disque 'public'
 
-            $succes = 'Modification effectuée avec succès.';
+        // Ajoutez le chemin du fichier à votre tableau de données.
+        $data['cv_path'] = $path;
 
-            return redirect()->route('professionnels.index')->withInformation($succes);
+        if ($professionnel->cv_path) {
+            // Supprimez l'ancien fichier s'il existe.
+            Storage::disk('public')->delete($professionnel->cv_path);
         }
+    }
+
+    // Mettez à jour le professionnel avec les données restantes.
+    $professionnel->update($data);
+
+    // Mettez à jour les associations de compétences.
+    if (!empty($competences)) {
+        $professionnel->competences()->syncWithoutDetaching($competences);
+    }
+
+    $succes = 'Modification effectuée avec succès.';
+
+    return redirect()->route('professionnels.index')->withInformation($succes);
+}
 
 
     /**
@@ -174,6 +222,11 @@ public function store(ProfessionnelRequest $professionnelRequest)
      */
     public function destroy(Professionnel $professionnel)
     {
+        // Supprimez le fichier s'il existe.
+        if ($professionnel->cv_path) {
+            Storage::disk('public')->delete($professionnel->cv_path);
+        }
+
         $professionnel->delete();
         return redirect()->route('professionnels.index')->withInformation('Suppression faite !');
     }

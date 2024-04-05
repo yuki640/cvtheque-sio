@@ -22,6 +22,7 @@ class Professionnel extends Model
         'source',
         'observation',
         'metier_id',
+        'cv_path',
     ];
 
     // la metode metier permet de définir la relation entre les tables professionnel et metier

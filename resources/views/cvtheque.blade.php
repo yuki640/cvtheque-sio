@@ -33,35 +33,39 @@
             <span class="navbar-toggler-icon"></span>
         </button>-->
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Paramètres <span
-                            class="caret"></span></a>
-                    <div class="dropdown-menu" aria-labelledby="themes">
-                        <a class="dropdown-item" href="{{route('competences.index')}}">Compétences</a>
-                        <a class="dropdown-item" href="{{route('metiers.index')}}">Metiers</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="../cerulean/">Cerulean</a>
-                        <a class="dropdown-item" href="../cosmo/">Cosmo</a>
-
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('professionnels.index')}}">Les CV</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://blog.bootswatch.com/">Blog</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Paramètres<span
-                            class="caret"></span></a>
-                    <div class="dropdown-menu" aria-labelledby="download">
-                        <a class="dropdown-item" href="<!--ROUTE A DEFINIR-->">Compétences</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<!--ROUTE A DEFINIR-->" download>Métiers</a>
-                    </div>
-                </li>
-            </ul>
+        <ul class="navbar-nav">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Paramètres <span
+                class="caret"></span></a>
+        <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" href="{{route('competences.index')}}">Compétences</a>
+            <a class="dropdown-item" href="{{route('metiers.index')}}">Metiers</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="../cerulean/">Cerulean</a>
+            <a class="dropdown-item" href="../cosmo/">Cosmo</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('professionnels.index')}}">Les CV</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="https://blog.bootswatch.com/">Blog</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">Paramètres<span
+                class="caret"></span></a>
+        <div class="dropdown-menu" aria-labelledby="download">
+            <a class="dropdown-item" href="<!--ROUTE A DEFINIR-->">Compétences</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="<!--ROUTE A DEFINIR-->" download>Métiers</a>
+        </div>
+    </li>
+    <li class="nav-item d-flex justify-content-end">
+        <form action="{{route('professionnels.index')}}" method="GET" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Rechercher" name="search">
+        </form>
+    </li>
+</ul>
         </div>
     </div>
 </div>
@@ -85,7 +89,6 @@
             </div>
         </div>
     </div>
-
 
 
     {{--    ICI CONTENU --}}
